@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanha Behera - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #1a202c;
+            --light: #f7fafc;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .skill-bar {
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left;
+        }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px) rotateX(5deg) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid var(--primary);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 3rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid white;
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+        
+        .text-shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .section-hidden {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+        
+        .section-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: float-particle 20s infinite linear;
+        }
+        
+        @keyframes float-particle {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) translateX(100vw) rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Animated Background Particles -->
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full glass-effect z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-white floating">KB</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-white hover:text-accent transition-all hover-lift">Home</a>
+                    <a href="#about" class="text-white hover:text-accent transition-all hover-lift">About</a>
+                    <a href="#skills" class="text-white hover:text-accent transition-all hover-lift">Skills</a>
+                    <a href="#projects" class="text-white hover:text-accent transition-all hover-lift">Projects</a>
+                    <a href="#timeline" class="text-white hover:text-accent transition-all hover-lift">Journey</a>
+                    <a href="#contact" class="text-white hover:text-accent transition-all hover-lift">Contact</a>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-white focus:outline-none hover-lift">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="container mx-auto px-6 py-20 relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 floating">
+                        Kanha <span class="gradient-text">Behera</span>
+                    </h1>
+                    <div class="typewriter text-xl md:text-2xl text-blue-100 mb-6">
+                        Full-Stack Developer & Problem Solver
+                    </div>
+                    <p class="text-blue-100 text-lg mb-8 leading-relaxed">
+                        Crafting digital experiences with React, Node.js, and passion. 
+                        Transforming ideas into functional, beautiful applications.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#projects" class="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-code mr-2"></i>View Work
+                        </a>
+                        <a href="#contact" class="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-all transform hover:scale-105">
+                            <i class="fas fa-paper-plane mr-2"></i>Get In Touch
+                        </a>
+                    </div>
+                    <div class="mt-8 flex space-x-4">
+                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all transform hover:scale-110">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all transform hover:scale-110">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all transform hover:scale-110">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="w-80 h-80 bg-white rounded-full overflow-hidden shadow-2xl floating">
+                        <img src="https://i.postimg.cc/13PZXdxT/IMG-20250615-110545-removebg.png" 
+                             alt="Professional portrait of Kanha Behera smiling confidently" 
+                             class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-16 gradient-text">
+                About Me
+            </h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <div class="rounded-lg overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-700">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d84858a3-9e3c-4d14-a3ee-f5e6a31562ed.png" 
+                             alt="Kanha Behera working on a laptop" 
+                             class="w-full h-64 object-cover">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold transform rotate-12 floating">
+                        React Expert
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">My Journey</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed text-lg">
+                        Hello! I'm <span class="font-semibold text-blue-600">Kanha Behera</span>,  a graduating student with a passion for full-stack development. Over the past year, I’ve immersed myself in the world of React.js, contributing to exciting projects and honing my skills. I have experience working on projects using technologies like React, NodeJS, Express, and MySQL. As a dedicated developer, I believe that strong skills are the key to staying ahead. My goal is to build user-friendly applications that provide value to users. I’m passionate about learning new technologies and solving problems.
+                    </p>
+                    <p class="text-gray-600 mb-6 leading-relaxed text-lg">
+                        I have hands-on experience with <span class="font-semibold">React, Node.js, Express, MySQL,</span> and various 
+                        modern development tools. I believe that strong technical skills combined with creative 
+                        problem-solving are the keys to building exceptional digital experiences.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-lg text-white text-center transform hover:scale-105 transition-transform">
+                            <i class="fas fa-code text-2xl mb-2"></i>
+                            <p class="font-semibold">Clean Code</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-600 p-4 rounded-lg text-white text-center transform hover:scale-105 transition-transform">
+                            <i class="fas fa-paint-brush text-2xl mb-2"></i>
+                            <p class="font-semibold">UI/UX Design</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-green-500 to-blue-600 p-4 rounded-lg text-white text-center transform hover:scale-105 transition-transform">
+                            <i class="fas fa-lightbulb text-2xl mb-2"></i>
+                            <p class="font-semibold">Innovation</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-red-500 to-orange-600 p-4 rounded-lg text-white text-center transform hover:scale-105 transition-transform">
+                            <i class="fas fa-rocket text-2xl mb-2"></i>
+                            <p class="font-semibold">Fast Learning</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-gray-50 relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-16 gradient-text">
+                Skills & Expertise
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 mb-16">
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Technical Stack</h3>
+                    <div class="space-y-6">
+                        <div class="transform hover:scale-105 transition-transform">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 font-medium">React.js</span>
+                                <span class="text-blue-600 font-semibold">92%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="skill-bar bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div class="transform hover:scale-105 transition-transform">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 font-medium">Node.js</span>
+                                <span class="text-blue-600 font-semibold">88%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="skill-bar bg-gradient-to-r from-green-500 to-blue-600 h-3 rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div class="transform hover:scale-105 transition-transform">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 font-medium">JavaScript/TypeScript</span>
+                                <span class="text-blue-600 font-semibold">90%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="skill-bar bg-gradient-to-r from-yellow-500 to-red-600 h-3 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="transform hover:scale-105 transition-transform">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700 font-medium">MySQL/MongoDB</span>
+                                <span class="text-blue-600 font-semibold">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="skill-bar bg-gradient-to-r from-purple-500 to-pink-600 h-3 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Tools & Technologies</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition-transform">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-code-branch text-white text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Git & GitHub</h4>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition-transform">
+                            <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-server text-white text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">REST APIs</h4>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition-transform">
+                            <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-paint-brush text-white text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Tailwind CSS</h4>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center transform hover:scale-105 transition-transform">
+                            <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-mobile-alt text-white text-2xl"></i>
+                            </div>
+                            <h4 class="font-semibold text-gray-800 mb-2">Responsive Design</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-white relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-16 gradient-text">
+                Featured Projects
+            </h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card bg-white rounded-lg shadow-xl overflow-hidden group">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/18e0789f-fe4e-4ea8-a1d9-43fbb73ac8e9.png" 
+                             alt="E-commerce platform dashboard" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">E-Commerce Platform</h3>
+                        <p class="text-gray-600 mb-4">Full-stack e-commerce solution with modern UI and secure payments.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">React</span>
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">Node.js</span>
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">MySQL</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-semibold hover:text-blue-800 transition-colors inline-flex items-center">
+                            View Project <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card bg-white rounded-lg shadow-xl overflow-hidden group">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/96794f58-5e6a-4c90-8512-2bec76113016.png" 
+                             alt="Social media application interface" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Social Media App</h3>
+                        <p class="text-gray-600 mb-4">Real-time social platform with chat and media sharing features.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">React</span>
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">Socket.io</span>
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">MongoDB</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-semibold hover:text-blue-800 transition-colors inline-flex items-center">
+                            View Project <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card bg-white rounded-lg shadow-xl overflow-hidden group">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/eeb2f7fb-4f4b-4e10-88e4-55ce5d724f5e.png" 
+                             alt="Analytics dashboard with data visualization" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Analytics Dashboard</h3>
+                        <p class="text-gray-600 mb-4">Interactive data visualization platform with real-time analytics.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">React</span>
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">D3.js</span>
+                            <span class="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">Express</span>
+                        </div>
+                        <a href="#" class="text-blue-600 font-semibold hover:text-blue-800 transition-colors inline-flex items-center">
+                            View Project <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="#" class="inline-flex items-center bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105">
+                    <span>View All Projects</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-20 bg-gray-50 relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-16 gradient-text">
+                My Journey
+            </h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="timeline-item mb-12">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Full-Stack Development</h3>
+                        <p class="text-gray-600 mb-2">2025 - Present</p>
+                        <p class="text-gray-600">Mastering React.js, Node.js, and modern web development practices while working on real-world projects.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item mb-12">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">React.js Specialization</h3>
+                        <p class="text-gray-600 mb-2">2024 - 2025</p>
+                        <p class="text-gray-600">Deep dive into React ecosystem, hooks, context API, and state management solutions.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Web Development Foundation</h3>
+                        <p class="text-gray-600 mb-2">2024 - 2025</p>
+                        <p class="text-gray-600">Learning HTML, CSS, JavaScript fundamentals and building first web applications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white relative">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-16 gradient-text">
+                Let's Work Together
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6">Get In Touch</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed text-lg">
+                        I'm always excited to take on new challenges and collaborate on innovative projects. 
+                        Let's create something amazing together!
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center transform hover:scale-105 transition-transform">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Email</p>
+                                <p class="text-gray-800 font-semibold">kanhabehara741@email.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center transform hover:scale-105 transition-transform">
+                            <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-phone text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Phone</p>
+                                <p class="text-gray-800 font-semibold">+91 7681022020</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center transform hover:scale-105 transition-transform">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Location</p>
+                                <p class="text-gray-800 font-semibold">Bhubaneswar  India</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4 mt-8">
+                        <a href="#" class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-110">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-gradient-to-r from-gray-800 to-black rounded-full flex items-center justify-center text-white hover:from-gray-900 hover:to-black transition-all transform hover:scale-110">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white hover:from-blue-500 hover:to-blue-700 transition-all transform hover:scale-110">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <form class="bg-white p-8 rounded-lg shadow-xl">
+                        <div class="mb-6">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Your Name">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="your.email@example.com">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" placeholder="Your message..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105">
+                            Send Message <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4 gradient-text">Kanha Behera</div>
+                <p class="text-gray-400 mb-8">Creating digital experiences that make a difference</p>
+                
+                <div class="flex justify-center space-x-6 mb-8">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors transform hover:scale-110">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors transform hover:scale-110">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors transform hover:scale-110">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors transform hover:scale-110">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                </div>
+                
+                <p class="text-gray-400 text-sm">
+                    © 2025 Kanha Behera. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Create animated background particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random properties
+                const size = Math.random() * 20 + 5;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay =
